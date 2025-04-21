@@ -58,12 +58,19 @@ export const BackgroundGradientAnimation = ({
   // Efficient move function using requestAnimationFrame
   const move = useCallback(() => {
     if (!interactiveRef.current) return;
+
     const updatePosition = () => {
       setCurX((prevX) => prevX + (tgX - prevX) / 20);
       setCurY((prevY) => prevY + (tgY - prevY) / 20);
-      interactiveRef.current.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
+
+      // Add null check before accessing the ref's style
+      if (interactiveRef.current) {
+        interactiveRef.current.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
+      }
+
       requestAnimationFrame(updatePosition);
     };
+
     updatePosition();
   }, [curX, curY, tgX, tgY]);
 
